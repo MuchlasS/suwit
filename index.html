@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Suwit</title>
+</head>
+<body>
+    <ul>
+        <li class="score">
+            Kamu <p id="yourScore"></p>
+        </li>
+        <li class="score">vs</li>
+        <li class="score">
+            Komputer <p id="compScore"></p>
+        </li>
+    </ul>
+
+    <div id="playerAction" class="player">
+        <p>Kamu</p>
+    </div>
+    <div id="compAction" class="comp">
+        <p class="no-mirror">Komputer</p>
+    </div>
+    
+    
+    <div class="bottom-navbar">
+        <ul>
+            <li onclick="getValue(this.id)" id="batu" class="card rock">
+            </li>
+            <li onclick="getValue(this.id)" id="gunting" class="card scissor">
+            </li>
+            <li onclick="getValue(this.id)" id="kertas" class="card paper">
+            </li>
+        </ul>
+        <button class="btn center" onclick="resetScore()">Reset Score</button>
+    </div>
+</body>
+<script type="text/javascript" src="script/index.js"></script>
+</html>
