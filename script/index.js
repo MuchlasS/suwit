@@ -1,100 +1,106 @@
-yourScore(false);
-compScore(false);
-changeImage('', '');
+const game = () => {
+    let playerScore = 0;
+    let computerScore = 0;
 
-document.getElementById('yourScore').innerHTML = yourScore(false);
-document.getElementById('compScore').innerHTML = compScore(false);
+    // START THE GAME
+    const startGame = () => {
+        const playButton = document.querySelector('.intro button');
+        const introScreen = document.querySelector('.intro');
+        const match = document.querySelector('.match');
 
-function yourScore(isAdd) {
-    let score = localStorage.getItem('yourScore')
-    if (score === null || score === 'null') {
-        score = 0;
+        playButton.addEventListener('click', () => {
+            introScreen.classList.add('fadeOut');
+            match.classList.add('fadeIn');
+        });
     }
 
-    if (isAdd) {
-        score = parseInt(score);
-        score++;
+    // PLAY MATCH
+    const playMatch = () => {
+        // PLAYER OPTIONS
+        const options = document.querySelectorAll('.options button');
+        // COMPUTER OPTIONS
+        const computerOptions = ['gunting', 'batu', 'kertas'];
+
+        // IMAGES
+        const playerImage = document.querySelector('.player-hand');
+        const computerImage = document.querySelector('.computer-hand');
+        const hands = document.querySelectorAll('.hands img');
+
+        // REFRESH THE ANIMATION
+        hands.forEach(hand => {
+            hand.addEventListener('animationend', function () {
+                this.style.animation = '';
+            });
+        });
+
+        // GAME LOGIC
+        options.forEach(option => {
+            option.addEventListener('click', function () {
+                const computerNumber = Math.floor(Math.random() * 3);
+                const computerChoice = computerOptions[computerNumber];
+
+                playerImage.src = `img/batu.png`;
+                computerImage.src = `img/batu.png`;
+
+                setTimeout(() => {
+                    // UPDATE IMAGES
+                    playerImage.src = `img/${this.textContent.toLowerCase()}.png`;
+                    computerImage.src = `img/${computerChoice}.png`;
+                    
+                    // COMPARE HANDS
+                    compareHands(this.textContent.toLowerCase(), computerChoice);
+                }, 2000);
+
+                // HAND ANIMATION
+                playerImage.style.animation = 'shakePlayer 2s ease';
+                computerImage.style.animation = 'shakeComputer 2s ease';
+            })
+        })
     }
 
-    localStorage.setItem('yourScore', score);
-    return score;
-}
+    // UPDATE SCORE
+    const updateScore = () => {
+        const scorePlayer = document.querySelector('.player-score p');
+        const scoreComputer = document.querySelector('.computer-score p');
 
-function compScore(isAdd) {
-    let score = localStorage.getItem('compScore');
-    if (score === null || score === 'null') {
-        score = 0;
+        scorePlayer.textContent = playerScore;
+        scoreComputer.textContent = computerScore;
     }
 
-    if (isAdd) {
-        score = parseInt(score);
-        score ++;
+    // COMPARE HANDS
+    const compareHands = (playerChoice, computerChoice) => {
+        const winner = document.querySelector('.winner');
+        const playerWinText = 'Kamu Menang!';
+        const computerWinText = 'Komputer Menang!';
+
+        // CHECK A TIE
+        if (playerChoice === computerChoice) {
+            winner.textContent = 'Kalian Seri!';
+            return;
+        }
+
+        // CHECK ROCK (BATU)
+        if (playerChoice === 'batu') {
+            computerChoice === 'gunting' ? winner.textContent = playerWinText : winner.textContent = computerWinText;
+        }
+
+        // CHECK PAPER (KERTAS)
+        if (playerChoice === 'kertas') {
+            computerChoice === 'gunting' ? winner.textContent = computerWinText : winner.textContent = playerWinText;
+        }
+
+        // CHECK SCISSORS (GUNTING)
+        if (playerChoice === 'gunting') {
+            computerChoice === 'batu' ? winner.textContent = computerWinText : winner.textContent = playerWinText;
+        }
+
+        winner.textContent === playerWinText ? playerScore++ : computerScore++;
+        updateScore();
+        return;
     }
 
-    localStorage.setItem('compScore', score);
-    return score;
+    startGame();
+    playMatch();
 }
 
-function computer() {
-    const comp = parseInt(Math.random() * 3 + 1);
-    if (comp === 1) return 'batu';
-    else if (comp === 2) return 'gunting'
-    return 'kertas';
-}
-
-function getValue(value){
-    const comp = computer();
-    let result = 'seri';
-
-    changeImage(value, comp);
-
-    if(comp === value) {
-        yourScore(true);
-        compScore(true);
-    }
-    else if(comp === 'kertas') {
-        value === 'gunting' ? result = 'menang' : result = 'kalah';
-    } else if (comp === 'batu') {
-        value === 'kertas' ? result = 'menang' : result = 'kalah';
-    } else if(comp === 'gunting') {
-        value === 'batu' ? result = 'menang' : result = 'kalah';
-    }
-
-    if(result === 'menang') yourScore(true);
-    else if(result === 'kalah') compScore(true);
-
-    
-    alert(`Kamu ${result} | Kamu memilih : ${value} | Computer memilih : ${comp}`)
-    if(compScore() === '10' || yourScore() === '10') gameOver(yourScore(), compScore());
-
-
-    return window.location.reload();
-}
-
-function resetScore() {
-    localStorage.clear();
-    location.reload();
-}
-
-function gameOver(yourScore, compScore) {
-    if(yourScore === '10') alert('Selamat Kamu telah menang!');
-
-    if(compScore === '10') alert('Sayang sekali Kamu telah kalah :(');
-
-    if(yourScore === '10' && compScore === '10') alert('Kamu seri melawan Computer!');
-
-    return resetScore();
-}
-
-function changeImage(playerValue, compValue) {
-    if (playerValue !== '' || compValue !== '') {
-        localStorage.setItem('playerValue', playerValue);
-        localStorage.setItem('compValue', compValue);
-    }
-
-    const playerAction = localStorage.getItem('playerValue') || 'batu';
-    const compAction = localStorage.getItem('compValue') || 'batu';
-
-    document.getElementById('playerAction').style.backgroundImage = `url('img/${playerAction}.png')`;
-    document.getElementById('compAction').style.backgroundImage = `url('img/${compAction}.png')`;
-}
+game();

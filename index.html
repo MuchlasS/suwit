@@ -7,35 +7,37 @@
     <title>Suwit</title>
 </head>
 <body>
-    <ul>
-        <li class="score">
-            Kamu <p id="yourScore"></p>
-        </li>
-        <li class="score">vs</li>
-        <li class="score">
-            Komputer <p id="compScore"></p>
-        </li>
-    </ul>
+    <section class="game">
+        <div class="score">
+            <div class="player-score">
+                <h2>Kamu</h2>
+                <p>0</p>
+            </div>
 
-    <div id="playerAction" class="player">
-        <p>Kamu</p>
-    </div>
-    <div id="compAction" class="comp">
-        <p class="no-mirror">Komputer</p>
-    </div>
-    
-    
-    <div class="bottom-navbar">
-        <ul>
-            <li onclick="getValue(this.id)" id="batu" class="card rock">
-            </li>
-            <li onclick="getValue(this.id)" id="gunting" class="card scissor">
-            </li>
-            <li onclick="getValue(this.id)" id="kertas" class="card paper">
-            </li>
-        </ul>
-        <button class="btn center" onclick="resetScore()">Reset Score</button>
-    </div>
+            <div class="computer-score">
+                <h2>Komputer</h2>
+                <p>0</p>
+            </div>
+        </div>
+
+        <div class="intro">
+            <h1>Suwit! Janken Game v.1.0</h1>
+            <button>Ayo Main!</button>
+        </div>
+
+        <div class="match fadeOut">
+            <h2 class="winner">Pilih Suwitmu!</h2>
+            <div class="hands">
+                <img src="img/batu.png" alt="" class="player-hand">
+                <img src="img/batu.png" alt="" class="computer-hand">
+            </div>
+            <div class="options">
+                <button class="batu">Batu</button>
+                <button class="gunting">Gunting</button>
+                <button class="kertas">Kertas</button>
+            </div>
+        </div>
+    </section>
+    <script src="script/index.js"></script>
 </body>
-<script type="text/javascript" src="script/index.js"></script>
 </html>
